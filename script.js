@@ -19,6 +19,9 @@ const GameBoard = (function () {
     const updateGridTile = (rowNum, colNum, symbol) => {
         if (gridTiles[rowNum][colNum] === " ") {
             gridTiles[rowNum][colNum] = symbol;
+            return "valid";
+        } else {
+            return "invalid";
         };
     };
     const getSymbolCount = (symbol) => {
@@ -64,13 +67,31 @@ const Game = (function () {
     const getCurrentPlayer = () => {
         return currentPlayer;
     };
-    const changeCurrentPlayer = (newCurrentPlayer) => {
+    const setCurrentPlayer = (newCurrentPlayer) => {
         currentPlayer = newCurrentPlayer;
+    };
+    const swapCurrentPlayer = () => {
+        if (currentPlayer === playerOne) {
+            currentPlayer = playerTwo;
+        } else if (currentPlayer === playerTwo) {
+            currentPlayer = playerOne;
+        };
+    };
+    const placeSymbol = (rowNum, colNum) => {
+        let updateResult = GameBoard.updateGridTile(rowNum, colNum, currentPlayer.symbol);
+        if (updateResult === "valid") {
+            GameBoard.printGameBoard();
+            swapCurrentPlayer();
+        } else if (updateResult === "invalid") {
+            console.log("That space is already occupied. Please select a different space.")
+        };
     };
 
     return {
         getCurrentPlayer,
-        changeCurrentPlayer,
+        setCurrentPlayer,
+        swapCurrentPlayer,
+        placeSymbol,
     };
 })();
 
@@ -101,3 +122,7 @@ const PlayerFactory = (playerName, playerSymbol) => {
 
 const playerOne = PlayerFactory("Player 1", "X");
 const playerTwo = PlayerFactory("Player 2", "O");
+Game.setCurrentPlayer(playerOne);
+GameBoard.printGameBoard();
+
+
