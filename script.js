@@ -15,7 +15,7 @@ const GameBoard = (function () {
     const getAllGridTiles = () => {
         return gridTiles;
     };
-    const updateGridTile = (rowNum, colNum, symbol) => {
+    const updateTile = (rowNum, colNum, symbol) => {
         if (gridTiles[rowNum][colNum] === " ") {
             gridTiles[rowNum][colNum] = symbol;
             return "valid";
@@ -29,7 +29,7 @@ const GameBoard = (function () {
     const incrementSymbolCount = (symbol) => {
         symbolCounts[symbol] += 1;
     };
-    const printGameBoard = () => {
+    const print = () => {
         console.log(`
          ${getGridTile(0,0)} │ ${getGridTile(0,1)} │ ${getGridTile(0,2)}
         ───┼───┼───
@@ -38,14 +38,23 @@ const GameBoard = (function () {
          ${getGridTile(2,0)} │ ${getGridTile(2,1)} │ ${getGridTile(2,2)}
         `);
     };
+    const reset = () => {
+        for (let i = 0; i < gridTiles.length; i++) {
+            for (let j = 0; j < gridTiles[i].length; j++) {
+                gridTiles[i][j] = " ";
+            };
+        };
+        print();
+    };
 
     return {
         getGridTile,
         getAllGridTiles,
-        updateGridTile,
+        updateTile,
         getSymbolCount,
         incrementSymbolCount,
-        printGameBoard,
+        print,
+        reset,
     };
 })();
 
@@ -79,10 +88,10 @@ const Game = (function () {
     };
     const placeSymbol = (rowNum, colNum) => {
         let playerSymbol = currentPlayer.symbol
-        let updateResult = GameBoard.updateGridTile(rowNum, colNum, playerSymbol);
+        let updateResult = GameBoard.updateTile(rowNum, colNum, playerSymbol);
         if (updateResult === "valid") {
             GameBoard.incrementSymbolCount(playerSymbol);
-            GameBoard.printGameBoard();
+            GameBoard.print();
             checkForWin(currentPlayer);
             swapCurrentPlayer();
         } else if (updateResult === "invalid") {
@@ -161,6 +170,6 @@ const PlayerFactory = (playerName, playerSymbol) => {
 const playerOne = PlayerFactory("Player 1", "X");
 const playerTwo = PlayerFactory("Player 2", "O");
 Game.setCurrentPlayer(playerOne);
-GameBoard.printGameBoard();
+GameBoard.print();
 
 
