@@ -52,6 +52,7 @@ const GameBoard = (function () {
 
 const Game = (function () {
     let currentPlayer = {};
+    let roundNumber = 1;
     const winningPatterns = [
         [[0,0], [0,1], [0,2]],
         [[1,0], [1,1], [1,2]],
@@ -110,8 +111,17 @@ const Game = (function () {
                     return winConditionMet;
                 };
             };
+            checkForTie(winConditionMet);
             return winConditionMet;
         };
+    };
+    const checkForTie = (winConditionMet) => {
+        let xCount = GameBoard.getSymbolCount("X");
+            let oCount = GameBoard.getSymbolCount("O");
+            let symbolTotal = xCount + oCount;
+            if (symbolTotal === 9 && winConditionMet === false) {
+                console.log(`It's a tie! Neither player wins.`);
+            };
     };
 
     return {
