@@ -13,8 +13,7 @@ const GameBoard = (function () {
         return gridTiles[rowNum][colNum];
     };
     const getAllGridTiles = () => {
-        currentTiles = gridTiles;
-        return currentTiles;
+        return gridTiles;
     };
     const updateGridTile = (rowNum, colNum, symbol) => {
         if (gridTiles[rowNum][colNum] === " ") {
@@ -78,12 +77,40 @@ const Game = (function () {
         };
     };
     const placeSymbol = (rowNum, colNum) => {
-        let updateResult = GameBoard.updateGridTile(rowNum, colNum, currentPlayer.symbol);
+        let playerSymbol = currentPlayer.symbol
+        let updateResult = GameBoard.updateGridTile(rowNum, colNum, playerSymbol);
         if (updateResult === "valid") {
+            GameBoard.incrementSymbolCount(playerSymbol);
             GameBoard.printGameBoard();
+            checkForWin(currentPlayer);
             swapCurrentPlayer();
         } else if (updateResult === "invalid") {
             console.log("That space is already occupied. Please select a different space.")
+        };
+    };
+    const checkForWin = (player) => {
+        let playerSymbol = player.symbol;
+        if (GameBoard.getSymbolCount(playerSymbol) >= 3) {
+            let winConditionMet = false;
+            gridTiles = GameBoard.getAllGridTiles();
+            for (let i = 0; i < winningPatterns.length; i++) {
+                let pattern = winningPatterns[i];
+                let matches = 0;
+                for (let j = 0; j < pattern.length; j++) {
+                    let rowNum = pattern[j][0];
+                    let colNum = pattern[j][1];
+                    let tile = GameBoard.getGridTile(rowNum, colNum);
+                    if (tile === playerSymbol) {
+                        matches += 1;
+                    };
+                };
+                if (matches === 3) {
+                    winConditionMet = true;
+                    console.log(`${player.getName()} won!`);
+                    return winConditionMet;
+                };
+            };
+            return winConditionMet;
         };
     };
 
@@ -92,6 +119,7 @@ const Game = (function () {
         setCurrentPlayer,
         swapCurrentPlayer,
         placeSymbol,
+        checkForWin,
     };
 })();
 
