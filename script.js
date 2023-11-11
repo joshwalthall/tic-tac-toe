@@ -4,7 +4,7 @@ const GameBoard = (function () {
         [" ", " ", " "],
         [" ", " ", " "]
     ];
-    const symbolCounts = {
+    const markCounts = {
         X: 0,
         O: 0,
     };
@@ -15,19 +15,19 @@ const GameBoard = (function () {
     const getAllGridTiles = () => {
         return gridTiles;
     };
-    const updateTile = (rowNum, colNum, symbol) => {
+    const markTile = (rowNum, colNum, mark) => {
         if (gridTiles[rowNum][colNum] === " ") {
-            gridTiles[rowNum][colNum] = symbol;
+            gridTiles[rowNum][colNum] = mark;
             return "valid";
         } else {
             return "invalid";
         };
     };
-    const getSymbolCount = (symbol) => {
-        return symbolCounts[symbol];
+    const getMarkCount = (mark) => {
+        return markCounts[mark];
     };
-    const incrementSymbolCount = (symbol) => {
-        symbolCounts[symbol] += 1;
+    const incrementMarkCount = (mark) => {
+        markCounts[mark] += 1;
     };
     const print = () => {
         console.log(`
@@ -44,15 +44,17 @@ const GameBoard = (function () {
                 gridTiles[i][j] = " ";
             };
         };
+        markCounts.X = 0;
+        markCounts.O = 0;
         print();
     };
 
     return {
         getGridTile,
         getAllGridTiles,
-        updateTile,
-        getSymbolCount,
-        incrementSymbolCount,
+        markTile,
+        getMarkCount,
+        incrementMarkCount,
         print,
         reset,
     };
@@ -72,6 +74,26 @@ const Game = (function () {
         [[0,0], [1,1], [2,2]],
         [[0,2], [1,1], [2,0]],
     ];
+    const winMoves = [
+        [0,0],
+        [0,2],
+        [2,2],
+        [1,1],
+        [2,0],
+        [1,0],
+        [2,1],
+    ];
+    const tieMoves = [
+        [0,0],
+        [0,1],
+        [0,2],
+        [1,1],
+        [1,0],
+        [1,2],
+        [2,1],
+        [2,0],
+        [2,2],
+    ];
 
     const getCurrentPlayer = () => {
         return currentPlayer;
@@ -86,22 +108,12 @@ const Game = (function () {
             currentPlayer = playerOne;
         };
     };
-    const placeSymbol = (rowNum, colNum) => {
-        let playerSymbol = currentPlayer.symbol
-        let updateResult = GameBoard.updateTile(rowNum, colNum, playerSymbol);
-        if (updateResult === "valid") {
-            GameBoard.incrementSymbolCount(playerSymbol);
-            GameBoard.print();
-            checkForWin(currentPlayer);
-            swapCurrentPlayer();
-        } else if (updateResult === "invalid") {
-            console.log("That space is already occupied. Please select a different space.")
-        };
-    };
     const checkForWin = (player) => {
-        let playerSymbol = player.symbol;
-        if (GameBoard.getSymbolCount(playerSymbol) >= 3) {
-            let winConditionMet = false;
+        let playerMark = player.mark;
+        let won = false;
+        let tied = false;
+        let playerMarkCount = GameBoard.getMarkCount(playerMark)
+        if (playerMarkCount >= 3) {
             gridTiles = GameBoard.getAllGridTiles();
             for (let i = 0; i < winningPatterns.length; i++) {
                 let pattern = winningPatterns[i];
@@ -110,43 +122,87 @@ const Game = (function () {
                     let rowNum = pattern[j][0];
                     let colNum = pattern[j][1];
                     let tile = GameBoard.getGridTile(rowNum, colNum);
-                    if (tile === playerSymbol) {
+                    if (tile === playerMark) {
                         matches += 1;
                     };
                 };
                 if (matches === 3) {
-                    winConditionMet = true;
-                    console.log(`${player.getName()} won!`);
-                    return winConditionMet;
+                    won = true;
+                    break;
                 };
             };
-            checkForTie(winConditionMet);
-            return winConditionMet;
+            if (won === false) {
+                tied = checkForTie();
+            };
+        };
+        return {won, tied};
+    };
+    const checkForTie = () => {
+        let xCount = GameBoard.getMarkCount("X");
+        let oCount = GameBoard.getMarkCount("O");
+        let markTotal = xCount + oCount;
+        if (markTotal === 9) {
+            return true;
+        } else {
+            return false;
         };
     };
-    const checkForTie = (winConditionMet) => {
-        let xCount = GameBoard.getSymbolCount("X");
-            let oCount = GameBoard.getSymbolCount("O");
-            let symbolTotal = xCount + oCount;
-            if (symbolTotal === 9 && winConditionMet === false) {
+    const tie = () => {
+        return;
+    };
+    const win = () => {
+        return;
+    };
+    const takeTurn = (rowNum, colNum) => {
+        let playerMark = currentPlayer.mark;
+        let markResult = GameBoard.markTile(rowNum, colNum, playerMark);
+        if (markResult === "valid") {
+            GameBoard.incrementMarkCount(playerMark);
+            GameBoard.print();
+            let turnResult = checkForWin(currentPlayer);
+            if (turnResult.won === false && turnResult.tied === false) {
+                swapCurrentPlayer();
+            } else if (turnResult.won === true && turnResult.tied === false) {
+                console.log(`${currentPlayer.getName()} won!`);
+                GameBoard.reset();
+            } else if (turnResult.won === false && turnResult.tied === true) {
                 console.log(`It's a tie! Neither player wins.`);
+                GameBoard.reset();
+            } else if (turnResult.won, turnResult.tied === true) {
+                console.log(`${currentPlayer.getName()} won and both players tied? Your code has an issue.`);
+                GameBoard.reset();
             };
+        } else if (markResult === "invalid") {
+            console.log("That space is already occupied. Please select a different space.")
+        };
+    };
+    const testWin = () => {
+        for (let i = 0; i < winMoves.length; i++) {
+            takeTurn(winMoves[i][0], winMoves[i][1]);
+        };
+    };
+    const testTie = () => {
+        for (let i = 0; i < tieMoves.length; i++) {
+            takeTurn(tieMoves[i][0], tieMoves[i][1]);
+        };
     };
 
     return {
         getCurrentPlayer,
         setCurrentPlayer,
         swapCurrentPlayer,
-        placeSymbol,
         checkForWin,
+        takeTurn,
+        testWin,
+        testTie,
     };
 })();
 
 
-const PlayerFactory = (playerName, playerSymbol) => {
+const PlayerFactory = (playerName, playerMark) => {
     const displayName = playerName;
     let score = 0;
-    const symbol = playerSymbol;
+    const mark = playerMark;
 
     const getName = () => {
         return displayName;
@@ -159,7 +215,7 @@ const PlayerFactory = (playerName, playerSymbol) => {
     };
 
     return {
-        symbol,
+        mark,
         getName,
         getScore,
         incrementScore,
