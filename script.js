@@ -148,10 +148,12 @@ const Game = (function () {
         };
     };
     const tie = () => {
-        return;
+        console.log(`It's a tie! Neither player wins.`);
+        GameBoard.reset();
     };
     const win = () => {
-        return;
+        console.log(`${currentPlayer.getName()} won!`);
+        GameBoard.reset();
     };
     const takeTurn = (rowNum, colNum) => {
         let playerMark = currentPlayer.mark;
@@ -163,11 +165,9 @@ const Game = (function () {
             if (turnResult.won === false && turnResult.tied === false) {
                 swapCurrentPlayer();
             } else if (turnResult.won === true && turnResult.tied === false) {
-                console.log(`${currentPlayer.getName()} won!`);
-                GameBoard.reset();
+                win();
             } else if (turnResult.won === false && turnResult.tied === true) {
-                console.log(`It's a tie! Neither player wins.`);
-                GameBoard.reset();
+                tie();
             } else if (turnResult.won, turnResult.tied === true) {
                 console.log(`${currentPlayer.getName()} won and both players tied? Your code has an issue.`);
                 GameBoard.reset();
