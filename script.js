@@ -63,6 +63,7 @@ const GameBoard = (function () {
 const Game = (function () {
     let currentPlayer = {};
     let roundNumber = 1;
+    let roundFirstPlayer = {};
     const winningPatterns = [
         [[0,0], [0,1], [0,2]],
         [[1,0], [1,1], [1,2]],
@@ -107,6 +108,19 @@ const Game = (function () {
             currentPlayer = playerOne;
         };
     };
+    const getRoundFirstPlayer = () => {
+        return roundFirstPlayer;
+    };
+    const setRoundFirstPlayer = (newRoundFirstPlayer) => {
+        roundFirstPlayer = newRoundFirstPlayer;
+    };
+    const swapRoundFirstPlayer = () => {
+        if (roundFirstPlayer === playerOne) {
+            roundFirstPlayer = playerTwo;
+        } else if (roundFirstPlayer === playerTwo) {
+            roundFirstPlayer = playerOne;
+        };
+    }
     const checkForWin = (player) => {
         let playerMark = player.mark;
         let won = false;
@@ -152,6 +166,8 @@ const Game = (function () {
         GameBoard.print();
         incrementRoundNumber();
         printRoundNumber();
+        swapRoundFirstPlayer();
+        setCurrentPlayer(roundFirstPlayer);
     };
     const tie = () => {
         console.log(`It's a tie! Neither player wins.`);
@@ -159,12 +175,8 @@ const Game = (function () {
         GameBoard.print();
         incrementRoundNumber();
         printRoundNumber();
-    };
-    const incrementRoundNumber = () => {
-        roundNumber += 1;
-    };
-    const printRoundNumber = () => {
-        console.log(`   -= ROUND ${roundNumber} =-`);
+        swapRoundFirstPlayer();
+        setCurrentPlayer(roundFirstPlayer);
     };
     const takeTurn = (rowNum, colNum) => {
         let playerMark = currentPlayer.mark;
@@ -188,6 +200,12 @@ const Game = (function () {
             console.log("That space is already occupied. Please select a different space.")
         };
     };
+    const incrementRoundNumber = () => {
+        roundNumber += 1;
+    };
+    const printRoundNumber = () => {
+        console.log(`   -= ROUND ${roundNumber} =-`);
+    };
     const testWin = () => {
         for (let i = 0; i < winMoves.length; i++) {
             takeTurn(winMoves[i][0], winMoves[i][1]);
@@ -203,6 +221,8 @@ const Game = (function () {
         getCurrentPlayer,
         setCurrentPlayer,
         swapCurrentPlayer,
+        getRoundFirstPlayer,
+        setRoundFirstPlayer,
         checkForWin,
         printRoundNumber,
         takeTurn,
@@ -235,10 +255,10 @@ const PlayerFactory = (playerName, playerMark) => {
     };
 };
 
-
 const playerOne = PlayerFactory("Player 1", "X");
 const playerTwo = PlayerFactory("Player 2", "O");
 Game.setCurrentPlayer(playerOne);
+Game.setRoundFirstPlayer(playerOne);
 Game.printRoundNumber();
 GameBoard.print();
 
