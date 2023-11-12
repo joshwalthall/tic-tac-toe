@@ -150,10 +150,15 @@ const Game = (function () {
     const tie = () => {
         console.log(`It's a tie! Neither player wins.`);
         GameBoard.reset();
+        incrementRoundNumber();
     };
     const win = () => {
         console.log(`${currentPlayer.getName()} won!`);
         GameBoard.reset();
+        incrementRoundNumber();
+    };
+    const incrementRoundNumber = () => {
+        roundNumber += 1;
     };
     const takeTurn = (rowNum, colNum) => {
         let playerMark = currentPlayer.mark;
