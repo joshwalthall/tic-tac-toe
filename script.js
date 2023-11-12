@@ -31,11 +31,11 @@ const GameBoard = (function () {
     };
     const print = () => {
         console.log(`
-         ${getGridTile(0,0)} │ ${getGridTile(0,1)} │ ${getGridTile(0,2)}
-        ───┼───┼───
-         ${getGridTile(1,0)} │ ${getGridTile(1,1)} │ ${getGridTile(1,2)}
-        ───┼───┼───
-         ${getGridTile(2,0)} │ ${getGridTile(2,1)} │ ${getGridTile(2,2)}
+     ${getGridTile(0,0)} │ ${getGridTile(0,1)} │ ${getGridTile(0,2)}
+    ───┼───┼───
+     ${getGridTile(1,0)} │ ${getGridTile(1,1)} │ ${getGridTile(1,2)}
+    ───┼───┼───
+     ${getGridTile(2,0)} │ ${getGridTile(2,1)} │ ${getGridTile(2,2)}
         `);
     };
     const reset = () => {
@@ -46,7 +46,6 @@ const GameBoard = (function () {
         };
         markCounts.X = 0;
         markCounts.O = 0;
-        print();
     };
 
     return {
@@ -147,18 +146,25 @@ const Game = (function () {
             return false;
         };
     };
-    const tie = () => {
-        console.log(`It's a tie! Neither player wins.`);
-        GameBoard.reset();
-        incrementRoundNumber();
-    };
     const win = () => {
         console.log(`${currentPlayer.getName()} won!`);
         GameBoard.reset();
+        GameBoard.print();
         incrementRoundNumber();
+        printRoundNumber();
+    };
+    const tie = () => {
+        console.log(`It's a tie! Neither player wins.`);
+        GameBoard.reset();
+        GameBoard.print();
+        incrementRoundNumber();
+        printRoundNumber();
     };
     const incrementRoundNumber = () => {
         roundNumber += 1;
+    };
+    const printRoundNumber = () => {
+        console.log(`   -= ROUND ${roundNumber} =-`);
     };
     const takeTurn = (rowNum, colNum) => {
         let playerMark = currentPlayer.mark;
@@ -176,6 +182,7 @@ const Game = (function () {
             } else if (turnResult.won, turnResult.tied === true) {
                 console.log(`${currentPlayer.getName()} won and both players tied? Your code has an issue.`);
                 GameBoard.reset();
+                GameBoard.print();
             };
         } else if (markResult === "invalid") {
             console.log("That space is already occupied. Please select a different space.")
@@ -197,6 +204,7 @@ const Game = (function () {
         setCurrentPlayer,
         swapCurrentPlayer,
         checkForWin,
+        printRoundNumber,
         takeTurn,
         testWin,
         testTie,
@@ -231,6 +239,7 @@ const PlayerFactory = (playerName, playerMark) => {
 const playerOne = PlayerFactory("Player 1", "X");
 const playerTwo = PlayerFactory("Player 2", "O");
 Game.setCurrentPlayer(playerOne);
+Game.printRoundNumber();
 GameBoard.print();
 
 
