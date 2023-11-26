@@ -59,7 +59,6 @@ const GameBoard = (function () {
     };
 })();
 
-
 const Game = (function () {
     let currentPlayer = {};
     let roundNumber = 1;
@@ -103,9 +102,9 @@ const Game = (function () {
     };
     const swapCurrentPlayer = () => {
         if (currentPlayer === playerOne) {
-            currentPlayer = playerTwo;
+            setCurrentPlayer(playerTwo);
         } else if (currentPlayer === playerTwo) {
-            currentPlayer = playerOne;
+            setCurrentPlayer(playerOne);
         };
     };
     const getRoundFirstPlayer = () => {
@@ -116,9 +115,9 @@ const Game = (function () {
     };
     const swapRoundFirstPlayer = () => {
         if (roundFirstPlayer === playerOne) {
-            roundFirstPlayer = playerTwo;
+            setRoundFirstPlayer(playerTwo);
         } else if (roundFirstPlayer === playerTwo) {
-            roundFirstPlayer = playerOne;
+            setRoundFirstPlayer(playerOne);
         };
     }
     const checkForWin = (player) => {
@@ -160,8 +159,15 @@ const Game = (function () {
             return false;
         };
     };
-    const win = () => {
-        console.log(`${currentPlayer.getName()} won!`);
+    const printScore = () => {
+        console.log(`--== SCORE ==--`);
+        console.log(`${playerOne.getName()}: ${playerOne.getScore()}`);
+        console.log(`${playerTwo.getName()}: ${playerTwo.getScore()}`);
+    };
+    const win = (winningPlayer) => {
+        winningPlayer.incrementScore();
+        console.log(`${winningPlayer.getName()} won!`);
+        printScore();
         GameBoard.reset();
         GameBoard.print();
         incrementRoundNumber();
@@ -171,6 +177,7 @@ const Game = (function () {
     };
     const tie = () => {
         console.log(`It's a tie! Neither player wins.`);
+        printScore();
         GameBoard.reset();
         GameBoard.print();
         incrementRoundNumber();
@@ -188,7 +195,7 @@ const Game = (function () {
             if (turnResult.won === false && turnResult.tied === false) {
                 swapCurrentPlayer();
             } else if (turnResult.won === true && turnResult.tied === false) {
-                win();
+                win(currentPlayer);
             } else if (turnResult.won === false && turnResult.tied === true) {
                 tie();
             } else if (turnResult.won, turnResult.tied === true) {
@@ -224,6 +231,7 @@ const Game = (function () {
         getRoundFirstPlayer,
         setRoundFirstPlayer,
         checkForWin,
+        printScore,
         printRoundNumber,
         takeTurn,
         testWin,
