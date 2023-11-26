@@ -239,6 +239,30 @@ const Game = (function () {
     };
 })();
 
+const DisplayController = (function () {
+    const elements = {
+        scoreContainer: document.getElementById('score-container'),
+        p1Name: document.getElementById('p1-name'),
+        p1Score: document.getElementById('p1-score'),
+        p2Name: document.getElementById('p2-name'),
+        p2Score: document.getElementById('p2-score'),
+        gridContainer: document.getElementById('grid-container'),
+    };
+
+    const changeText = (elementName, newText) => {
+        elements[elementName].textContent = newText;
+    };
+    const updateNames = () => {
+        changeText('p1Name', playerOne.getName());
+        changeText('p2Name', playerTwo.getName());
+    };
+
+    return {
+        elements,
+        changeText,
+        updateNames,
+    };
+})();
 
 const PlayerFactory = (playerName, playerMark) => {
     const displayName = playerName;
@@ -263,11 +287,13 @@ const PlayerFactory = (playerName, playerMark) => {
     };
 };
 
-const playerOne = PlayerFactory("Player 1", "X");
-const playerTwo = PlayerFactory("Player 2", "O");
+const playerOne = PlayerFactory("Josh", "X");
+const playerTwo = PlayerFactory("Hopey", "O");
 Game.setCurrentPlayer(playerOne);
 Game.setRoundFirstPlayer(playerOne);
 Game.printRoundNumber();
 GameBoard.print();
+
+DisplayController.updateNames();
 
 
