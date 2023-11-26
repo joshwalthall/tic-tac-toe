@@ -59,10 +59,35 @@ const GameBoard = (function () {
     };
 })();
 
+const PlayerFactory = (playerName, playerMark) => {
+    const displayName = playerName;
+    let score = 0;
+    const mark = playerMark;
+
+    const getName = () => {
+        return displayName;
+    };
+    const getScore = () => {
+        return score;
+    };
+    const incrementScore = () => {
+        score += 1;
+    };
+
+    return {
+        mark,
+        getName,
+        getScore,
+        incrementScore,
+    };
+};
+
 const Game = (function () {
-    let currentPlayer = {};
+    const playerOne = PlayerFactory('Josh', 'X');
+    const playerTwo = PlayerFactory('Hopey', 'O');
+    let currentPlayer = {playerOne};
     let roundNumber = 1;
-    let roundFirstPlayer = {};
+    let roundFirstPlayer = {playerOne};
     const winningPatterns = [
         [[0,0], [0,1], [0,2]],
         [[1,0], [1,1], [1,2]],
@@ -93,7 +118,6 @@ const Game = (function () {
         [2,0],
         [2,2],
     ];
-
     const getCurrentPlayer = () => {
         return currentPlayer;
     };
@@ -225,7 +249,11 @@ const Game = (function () {
         };
     };
 
+    printRoundNumber();
+
     return {
+        playerOne,
+        playerTwo,
         getCurrentPlayer,
         setCurrentPlayer,
         swapCurrentPlayer,
@@ -254,12 +282,12 @@ const DisplayController = (function () {
         elements[elementName].textContent = newText;
     };
     const updateNames = () => {
-        changeText('p1Name', playerOne.getName());
-        changeText('p2Name', playerTwo.getName());
+        changeText('p1Name', Game.playerOne.getName());
+        changeText('p2Name', Game.playerTwo.getName());
     };
     const updateScores = () => {
-        changeText('p1Score', playerOne.getScore());
-        changeText('p2Score', playerTwo.getScore());
+        changeText('p1Score', Game.playerOne.getScore());
+        changeText('p2Score', Game.playerTwo.getScore());
     };
 
     return {
@@ -270,34 +298,6 @@ const DisplayController = (function () {
     };
 })();
 
-const PlayerFactory = (playerName, playerMark) => {
-    const displayName = playerName;
-    let score = 0;
-    const mark = playerMark;
-
-    const getName = () => {
-        return displayName;
-    };
-    const getScore = () => {
-        return score;
-    };
-    const incrementScore = () => {
-        score += 1;
-    };
-
-    return {
-        mark,
-        getName,
-        getScore,
-        incrementScore,
-    };
-};
-
-const playerOne = PlayerFactory("Josh", "X");
-const playerTwo = PlayerFactory("Hopey", "O");
-Game.setCurrentPlayer(playerOne);
-Game.setRoundFirstPlayer(playerOne);
-Game.printRoundNumber();
 GameBoard.print();
 
 DisplayController.updateNames();
