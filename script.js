@@ -166,6 +166,7 @@ const Game = (function () {
     };
     const win = (winningPlayer) => {
         winningPlayer.incrementScore();
+        DisplayController.updateScores();
         console.log(`${winningPlayer.getName()} won!`);
         printScore();
         GameBoard.reset();
@@ -256,11 +257,16 @@ const DisplayController = (function () {
         changeText('p1Name', playerOne.getName());
         changeText('p2Name', playerTwo.getName());
     };
+    const updateScores = () => {
+        changeText('p1Score', playerOne.getScore());
+        changeText('p2Score', playerTwo.getScore());
+    };
 
     return {
         elements,
         changeText,
         updateNames,
+        updateScores,
     };
 })();
 
@@ -295,5 +301,6 @@ Game.printRoundNumber();
 GameBoard.print();
 
 DisplayController.updateNames();
+DisplayController.updateScores();
 
 
