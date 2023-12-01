@@ -1,6 +1,7 @@
 #game-container {
     display: flex;
     flex-direction: column;
+    gap: 50px;
     align-items: center;
 }
 
@@ -12,4 +13,19 @@
 #score-container {
     font-size: 1.2rem;
     font-weight: 600;
+}
+
+#grid-container {
+    width: 310px;
+    height: 310px;
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    column-gap: 5px;
+    row-gap: 5px;
+    background-color: dimgray;
+}
+
+.grid-tile {
+    background-color: white;
 }

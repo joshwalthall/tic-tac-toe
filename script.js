@@ -83,8 +83,8 @@ const PlayerFactory = (playerName, playerMark) => {
 };
 
 const Game = (function () {
-    const playerOne = PlayerFactory('Josh', 'X');
-    const playerTwo = PlayerFactory('Hopey', 'O');
+    const playerOne = PlayerFactory('Hopey', 'X');
+    const playerTwo = PlayerFactory('Drippy', 'O');
     let currentPlayer = {playerOne};
     let roundNumber = 1;
     let roundFirstPlayer = {playerOne};
