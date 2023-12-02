@@ -1,8 +1,23 @@
 const GameBoard = (function () {
+    const tileOneDiv = document.getElementById("tile-1");
+    const tileTwoDiv = document.getElementById("tile-2");
+    const tileThreeDiv = document.getElementById("tile-3");
+    const tileFourDiv = document.getElementById("tile-4");
+    const tileFiveDiv = document.getElementById("tile-5");
+    const tileSixDiv = document.getElementById("tile-6");
+    const tileSevenDiv = document.getElementById("tile-7");
+    const tileEightDiv = document.getElementById("tile-8");
+    const tileNineDiv = document.getElementById("tile-9");
+
     const gridTiles = [
         [" ", " ", " "],
         [" ", " ", " "],
         [" ", " ", " "]
+    ];
+    const tileDivs = [
+        [tileOneDiv, tileTwoDiv, tileThreeDiv],
+        [tileFourDiv, tileFiveDiv, tileSixDiv],
+        [tileSevenDiv, tileEightDiv, tileNineDiv]
     ];
     const markCounts = {
         X: 0,
@@ -18,6 +33,7 @@ const GameBoard = (function () {
     const markTile = (rowNum, colNum, mark) => {
         if (gridTiles[rowNum][colNum] === " ") {
             gridTiles[rowNum][colNum] = mark;
+            tileDivs[rowNum][colNum].textContent = mark;
             return "valid";
         } else {
             return "invalid";
@@ -248,6 +264,11 @@ const Game = (function () {
             takeTurn(tieMoves[i][0], tieMoves[i][1]);
         };
     };
+    const initialize = () => {
+        setCurrentPlayer(playerOne);
+        setRoundFirstPlayer(playerOne);
+        printRoundNumber();
+    };
 
     printRoundNumber();
 
@@ -265,6 +286,7 @@ const Game = (function () {
         takeTurn,
         testWin,
         testTie,
+        initialize,
     };
 })();
 
@@ -298,6 +320,7 @@ const DisplayController = (function () {
     };
 })();
 
+Game.initialize();
 GameBoard.print();
 
 DisplayController.updateNames();
