@@ -1,23 +1,9 @@
 const GameBoard = (function () {
-    const tileOneDiv = document.getElementById("tile-1");
-    const tileTwoDiv = document.getElementById("tile-2");
-    const tileThreeDiv = document.getElementById("tile-3");
-    const tileFourDiv = document.getElementById("tile-4");
-    const tileFiveDiv = document.getElementById("tile-5");
-    const tileSixDiv = document.getElementById("tile-6");
-    const tileSevenDiv = document.getElementById("tile-7");
-    const tileEightDiv = document.getElementById("tile-8");
-    const tileNineDiv = document.getElementById("tile-9");
 
     const gridTiles = [
         [" ", " ", " "],
         [" ", " ", " "],
         [" ", " ", " "]
-    ];
-    const tileDivs = [
-        [tileOneDiv, tileTwoDiv, tileThreeDiv],
-        [tileFourDiv, tileFiveDiv, tileSixDiv],
-        [tileSevenDiv, tileEightDiv, tileNineDiv]
     ];
     const markCounts = {
         X: 0,
@@ -33,7 +19,6 @@ const GameBoard = (function () {
     const markTile = (rowNum, colNum, mark) => {
         if (gridTiles[rowNum][colNum] === " ") {
             gridTiles[rowNum][colNum] = mark;
-            tileDivs[rowNum][colNum].textContent = mark;
             return "valid";
         } else {
             return "invalid";
@@ -231,6 +216,7 @@ const Game = (function () {
         let markResult = GameBoard.markTile(rowNum, colNum, playerMark);
         if (markResult === "valid") {
             GameBoard.incrementMarkCount(playerMark);
+            DisplayController.changeTileMark(rowNum, colNum, playerMark);
             GameBoard.print();
             let turnResult = checkForWin(currentPlayer);
             if (turnResult.won === false && turnResult.tied === false) {
@@ -291,6 +277,22 @@ const Game = (function () {
 })();
 
 const DisplayController = (function () {
+    const tileOne = document.getElementById("tile-1");
+    const tileTwo = document.getElementById("tile-2");
+    const tileThree = document.getElementById("tile-3");
+    const tileFour = document.getElementById("tile-4");
+    const tileFive = document.getElementById("tile-5");
+    const tileSix = document.getElementById("tile-6");
+    const tileSeven = document.getElementById("tile-7");
+    const tileEight = document.getElementById("tile-8");
+    const tileNine = document.getElementById("tile-9");
+
+    const tiles = [
+        [tileOne, tileTwo, tileThree],
+        [tileFour, tileFive, tileSix],
+        [tileSeven, tileEight, tileNine]
+    ];
+
     const elements = {
         scoreContainer: document.getElementById('score-container'),
         p1Name: document.getElementById('p1-name'),
@@ -300,21 +302,26 @@ const DisplayController = (function () {
         gridContainer: document.getElementById('grid-container'),
     };
 
-    const changeText = (elementName, newText) => {
+    const changeTileMark = (rowNum, colNum, mark) => {
+        tiles[rowNum][colNum].textContent = mark;
+    }
+    const changeElementText = (elementName, newText) => {
         elements[elementName].textContent = newText;
     };
     const updateNames = () => {
-        changeText('p1Name', Game.playerOne.getName());
-        changeText('p2Name', Game.playerTwo.getName());
+        changeElementText('p1Name', Game.playerOne.getName());
+        changeElementText('p2Name', Game.playerTwo.getName());
     };
     const updateScores = () => {
-        changeText('p1Score', Game.playerOne.getScore());
-        changeText('p2Score', Game.playerTwo.getScore());
+        changeElementText('p1Score', Game.playerOne.getScore());
+        changeElementText('p2Score', Game.playerTwo.getScore());
     };
 
     return {
+        tiles,
         elements,
-        changeText,
+        changeTileMark,
+        changeElementText,
         updateNames,
         updateScores,
     };
