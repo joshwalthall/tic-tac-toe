@@ -239,7 +239,9 @@ const Game = (function () {
                 swapCurrentPlayer();
             } else if (turnResult.won === true && turnResult.tied === false) {
                 win(currentPlayer);
+                DisplayController.clearTiles();
             } else if (turnResult.won === false && turnResult.tied === true) {
+                DisplayController.clearTiles();
                 tie();
             } else if (turnResult.won, turnResult.tied === true) {
                 console.log(`${currentPlayer.getName()} won and both players tied? Your code has an issue.`);
@@ -323,7 +325,14 @@ const DisplayController = (function () {
 
     const changeTileMark = (rowNum, colNum, mark) => {
         tiles[rowNum][colNum].textContent = mark;
-    }
+    };
+    const clearTiles = () => {
+        for (row = 0; row < 3; row++) {
+            for (col = 0; col < 3; col++) {
+                changeTileMark(row, col, "");
+            };
+        };
+    };
     const changeElementText = (elementName, newText) => {
         elements[elementName].textContent = newText;
     };
@@ -340,6 +349,7 @@ const DisplayController = (function () {
         tiles,
         elements,
         changeTileMark,
+        clearTiles,
         changeElementText,
         updateNames,
         updateScores,
