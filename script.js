@@ -198,7 +198,7 @@ const Game = (function () {
         GameBoard.reset();
         GameBoard.print();
         incrementRoundNumber();
-        printRoundNumber();
+        updateRoundNumber();
         swapRoundFirstPlayer();
         setCurrentPlayer(roundFirstPlayer);
     };
@@ -208,7 +208,7 @@ const Game = (function () {
         GameBoard.reset();
         GameBoard.print();
         incrementRoundNumber();
-        printRoundNumber();
+        updateRoundNumber();
         swapRoundFirstPlayer();
         setCurrentPlayer(roundFirstPlayer);
     };
@@ -238,8 +238,9 @@ const Game = (function () {
     const incrementRoundNumber = () => {
         roundNumber += 1;
     };
-    const printRoundNumber = () => {
+    const updateRoundNumber = () => {
         console.log(`   -= ROUND ${roundNumber} =-`);
+        DisplayController.changeElementText('roundNumber', `Round ${roundNumber}`);
     };
     const testWin = () => {
         for (let i = 0; i < winMoves.length; i++) {
@@ -254,7 +255,7 @@ const Game = (function () {
     const initialize = () => {
         setCurrentPlayer(playerOne);
         setRoundFirstPlayer(playerOne);
-        printRoundNumber();
+        updateRoundNumber();
     };
 
     return {
@@ -267,7 +268,7 @@ const Game = (function () {
         setRoundFirstPlayer,
         checkForWin,
         printScore,
-        printRoundNumber,
+        updateRoundNumber,
         takeTurn,
         testWin,
         testTie,
@@ -299,6 +300,7 @@ const DisplayController = (function () {
         p2Name: document.getElementById('p2-name'),
         p2Score: document.getElementById('p2-score'),
         gridContainer: document.getElementById('grid-container'),
+        roundNumber: document.getElementById('round-number'),
         turnPlayer: document.getElementById('turn-player'),
     };
 
