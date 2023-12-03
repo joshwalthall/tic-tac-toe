@@ -119,6 +119,21 @@ const Game = (function () {
         [2,0],
         [2,2],
     ];
+    const addClickListeners = () => {
+        for (row = 0; row < 3; row++) {
+            for (col = 0; col < 3; col++) {
+                let tile = DisplayController.tiles[row][col];
+                tile.addEventListener('click', processTurnClick);
+            };
+        };
+    };
+    const processTurnClick = (e) => {
+        let tileID = e.target.id;
+        let splitID = tileID.split('-');
+        let tileRow = Number(splitID[1]);
+        let tileCol = Number(splitID[2]);
+        takeTurn(tileRow, tileCol);
+    };
     const getCurrentPlayer = () => {
         return currentPlayer;
     };
@@ -253,6 +268,7 @@ const Game = (function () {
         };
     };
     const initialize = () => {
+        addClickListeners();
         setCurrentPlayer(playerOne);
         setRoundFirstPlayer(playerOne);
         updateRoundNumber();
@@ -277,20 +293,20 @@ const Game = (function () {
 })();
 
 const DisplayController = (function () {
-    const tileOne = document.getElementById("tile-1");
-    const tileTwo = document.getElementById("tile-2");
-    const tileThree = document.getElementById("tile-3");
-    const tileFour = document.getElementById("tile-4");
-    const tileFive = document.getElementById("tile-5");
-    const tileSix = document.getElementById("tile-6");
-    const tileSeven = document.getElementById("tile-7");
-    const tileEight = document.getElementById("tile-8");
-    const tileNine = document.getElementById("tile-9");
+    const tile0_0 = document.getElementById("tile-0-0");
+    const tile0_1 = document.getElementById("tile-0-1");
+    const tile0_2 = document.getElementById("tile-0-2");
+    const tile1_0 = document.getElementById("tile-1-0");
+    const tile1_1 = document.getElementById("tile-1-1");
+    const tile1_2 = document.getElementById("tile-1-2");
+    const tile2_0 = document.getElementById("tile-2-0");
+    const tile2_1 = document.getElementById("tile-2-1");
+    const tile2_2 = document.getElementById("tile-2-2");
 
     const tiles = [
-        [tileOne, tileTwo, tileThree],
-        [tileFour, tileFive, tileSix],
-        [tileSeven, tileEight, tileNine]
+        [tile0_0, tile0_1, tile0_2],
+        [tile1_0, tile1_1, tile1_2],
+        [tile2_0, tile2_1, tile2_2]
     ];
 
     const elements = {
@@ -300,6 +316,7 @@ const DisplayController = (function () {
         p2Name: document.getElementById('p2-name'),
         p2Score: document.getElementById('p2-score'),
         gridContainer: document.getElementById('grid-container'),
+        clickDisplayer: document.getElementById('click-displayer'),
         roundNumber: document.getElementById('round-number'),
         turnPlayer: document.getElementById('turn-player'),
     };

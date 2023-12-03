@@ -1,3 +1,70 @@
+:root {
+    --base-color: #f0edeb;
+}
+
+@font-face {
+    font-family: "ubuntu";
+    src:
+        url("fonts/ubuntu-light-webfont.woff"),
+        url("fonts/ubuntu-light-webfont.woff2");
+    font-weight: 300;
+    font-size: normal;
+}
+
+@font-face {
+    font-family: "ubuntu";
+    src:
+        url("fonts/ubuntu-regular-webfont.woff"),
+        url("fonts/ubuntu-regular-webfont.woff2");
+    font-weight: normal;
+    font-size: normal;
+}
+
+@font-face {
+    font-family: "ubuntu";
+    src:
+        url("fonts/ubuntu-medium-webfont.woff"),
+        url("fonts/ubuntu-medium-webfont.woff2");
+    font-weight: 500;
+    font-size: normal;
+}
+
+@font-face {
+    font-family: "ubuntu";
+    src:
+        url("fonts/ubuntu-bold-webfont.woff"),
+        url("fonts/ubuntu-bold-webfont.woff2");
+    font-weight: bold;
+    font-size: normal;
+}
+
+@font-face {
+    font-family: "ubuntu";
+    src:
+        url("fonts/ubuntu-italic-webfont.woff"),
+        url("fonts/ubuntu-italic-webfont.woff2");
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "ubuntu";
+    src:
+        url("fonts/ubuntu-bolditalic-webfont.woff"),
+        url("fonts/ubuntu-bolditalic-webfont.woff2");
+    font-weight: bold;
+    font-style: italic;
+    font-size: normal;
+}
+
+
+body {
+    margin: 0;
+    font-family: 'ubuntu';
+    font-size: 1rem;
+    background-color: var(--base-color);
+}
+
 #game-container {
     display: flex;
     flex-direction: column;
@@ -27,7 +94,7 @@
 }
 
 .grid-tile {
-    background-color: white;
+    background-color: var(--base-color);
     font-size: 3rem;
     display: flex;
     justify-content: center;
