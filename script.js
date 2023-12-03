@@ -124,6 +124,7 @@ const Game = (function () {
     };
     const setCurrentPlayer = (newCurrentPlayer) => {
         currentPlayer = newCurrentPlayer;
+        DisplayController.changeElementText('turnPlayer', `${currentPlayer.getName()}'s turn`);
     };
     const swapCurrentPlayer = () => {
         if (currentPlayer === playerOne) {
@@ -256,8 +257,6 @@ const Game = (function () {
         printRoundNumber();
     };
 
-    printRoundNumber();
-
     return {
         playerOne,
         playerTwo,
@@ -300,6 +299,7 @@ const DisplayController = (function () {
         p2Name: document.getElementById('p2-name'),
         p2Score: document.getElementById('p2-score'),
         gridContainer: document.getElementById('grid-container'),
+        turnPlayer: document.getElementById('turn-player'),
     };
 
     const changeTileMark = (rowNum, colNum, mark) => {
