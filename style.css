@@ -1,5 +1,5 @@
 :root {
-    --base-color: #f0edeb;
+    --base-color: #f7f5f3;
 }
 
 @font-face {
@@ -118,6 +118,9 @@ body {
     font-weight: 700;
 }
 
-/* .mark {
-    animation: shake 0.1s linear;
-} */
+button {
+    width: 175px;
+    height: 50px;
+    font-size: 1.3rem;
+    font-weight: 700;
+}

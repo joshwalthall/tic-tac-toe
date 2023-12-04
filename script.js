@@ -68,6 +68,9 @@ const PlayerFactory = (playerName, playerMark) => {
     const getName = () => {
         return displayName;
     };
+    const setName = (newName) => {
+        displayName = newName;
+    };
     const getScore = () => {
         return score;
     };
@@ -78,6 +81,7 @@ const PlayerFactory = (playerName, playerMark) => {
     return {
         mark,
         getName,
+        setName,
         getScore,
         incrementScore,
     };

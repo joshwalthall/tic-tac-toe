@@ -1,12 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <title>Tic Tac Toe</title>
 </head>
+
 <body>
+
+  <dialog id="names-input">
+    <div id="form-container">
+      <form action="" id="names-input-form" method="dialog">
+        <div class="form-row">
+          <label for="player-one-name">Player 1 Name <span class="req-star" aria-label="required">*</span></label>
+          <input type="text" id="player-one-name" name="player-one-name" required>
+        </div>
+        <div class="form-row">
+          <label for="player-two-name">Player 2 Name <span class="req-star" aria-label="required">*</span></label>
+          <input type="text" id="player-two-name" name="player-two-name" required>
+        </div>
+      </form>
+      <menu id="form-buttons-container">
+        <button id="cancel-name-change" form="names-input-form" autofocus>Cancel</button>
+        <button type="submit" id="save-name-change" form="names-input-form">Save</button>
+      </menu>
+    </div>
+  </dialog>
+
   <div id="game-container">
     <div id="game-title">Tic-Tac-Toe</div>
     <div id="score-container"><span id="p1-name" class="player-name"></span>: <span id="p1-score" class="player-score"></span> | <span id="p2-name" class="player-name"></span>: <span id="p2-score" class="player-score"></span></div>
@@ -23,7 +45,14 @@
     </div>
     <div id="round-number"></div>
     <div id="turn-player"></div>
+    <div id="buttons-container">
+      <button id="change-names-button">Change Names</button>
+      <button id="next-round-button">Next Round</button>
+      <button id="end-game">End Game</button>
+    </div>
   </div>
+
   <script src="script.js"></script>
 </body>
+
 </html>
