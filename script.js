@@ -249,7 +249,8 @@ const Game = (function () {
                 GameBoard.print();
             };
         } else if (markResult === "invalid") {
-            console.log("That space is already occupied. Please select a different space.")
+            console.log("That space is already occupied. Please select a different space.");
+            DisplayController.shakeTile(rowNum, colNum);
         };
     };
     const incrementRoundNumber = () => {
@@ -324,17 +325,29 @@ const DisplayController = (function () {
     };
 
     const changeTileMark = (rowNum, colNum, mark) => {
-        tiles[rowNum][colNum].textContent = mark;
+        tiles[rowNum][colNum].firstChild.textContent = mark;
     };
     const clearTiles = () => {
         for (row = 0; row < 3; row++) {
             for (col = 0; col < 3; col++) {
-                changeTileMark(row, col, "");
+                changeTileMark(row, col, " ");
             };
         };
     };
     const changeElementText = (elementName, newText) => {
         elements[elementName].textContent = newText;
+    };
+    const _removeShakeAnim = (tileMark) => {
+        tileMark.style.animation = "none";
+        tileMark.offsetWidth;
+    };
+    const _addShakeAnim = (tileMark) => {
+        tileMark.style.animation="shake 0.2s linear 1";
+    };
+    const shakeTile = (rowNum, colNum) => {
+        let tileMark = DisplayController.tiles[rowNum][colNum].firstChild;
+        _removeShakeAnim(tileMark);
+        _addShakeAnim(tileMark);
     };
     const updateNames = () => {
         changeElementText('p1Name', Game.playerOne.getName());
@@ -351,6 +364,7 @@ const DisplayController = (function () {
         changeTileMark,
         clearTiles,
         changeElementText,
+        shakeTile,
         updateNames,
         updateScores,
     };

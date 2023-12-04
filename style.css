@@ -57,6 +57,11 @@
     font-size: normal;
 }
 
+@keyframes shake {
+    0%, 50%, 100% {translate: 0px 0px;}
+    25% {translate: 4px 0px;}
+    75% {translate: -4px 0px;}
+}
 
 body {
     margin: 0;
@@ -112,3 +117,7 @@ body {
     font-size: 2rem;
     font-weight: 700;
 }
+
+/* .mark {
+    animation: shake 0.1s linear;
+} */
