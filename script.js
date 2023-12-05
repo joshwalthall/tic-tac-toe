@@ -60,6 +60,7 @@ const GameBoard = (function () {
     };
 })();
 
+
 const PlayerFactory = (playerName, playerMark) => {
     const displayName = playerName;
     let score = 0;
@@ -87,12 +88,22 @@ const PlayerFactory = (playerName, playerMark) => {
     };
 };
 
+
 const Game = (function () {
-    const playerOne = PlayerFactory('Hopey', 'X');
-    const playerTwo = PlayerFactory('Drippy', 'O');
+    const changeNamesButton = document.getElementById('change-names-button');
+    const nextRoundButton = document.getElementById('next-round-button');
+    const endGameButton = document.getElementById('end-game-button');
+    const namesChangeDialog = document.getElementById('names-change-dialog');
+    const namesChangeForm = document.getElementById('names-change-form');
+    const saveNamesButton = document.getElementById('save-names-button');
+    const cancelNamesButton = document.getElementById('cancel-names-button');
+
+    const playerOne = PlayerFactory('Player One', 'X');
+    const playerTwo = PlayerFactory('Player Two', 'O');
     let currentPlayer = {playerOne};
     let roundNumber = 1;
     let roundFirstPlayer = {playerOne};
+
     const winningPatterns = [
         [[0,0], [0,1], [0,2]],
         [[1,0], [1,1], [1,2]],
@@ -123,6 +134,7 @@ const Game = (function () {
         [2,0],
         [2,2],
     ];
+
     const addClickListeners = () => {
         for (row = 0; row < 3; row++) {
             for (col = 0; col < 3; col++) {
@@ -130,6 +142,14 @@ const Game = (function () {
                 tile.addEventListener('click', processTurnClick);
             };
         };
+        changeNamesButton.addEventListener('click', _showNamesChangeDialog);
+        cancelNamesButton.addEventListener('click', _cancelNamesChange);
+    };
+    const _showNamesChangeDialog = () => {
+        namesChangeDialog.showModal();
+    };
+    const _cancelNamesChange = () => {
+        namesChangeDialog.close();
     };
     const processTurnClick = (e) => {
         let tileID = e.target.id;
@@ -299,6 +319,7 @@ const Game = (function () {
     };
 })();
 
+
 const DisplayController = (function () {
     const tile0_0 = document.getElementById("tile-0-0");
     const tile0_1 = document.getElementById("tile-0-1");
@@ -373,6 +394,7 @@ const DisplayController = (function () {
         updateScores,
     };
 })();
+
 
 Game.initialize();
 GameBoard.print();

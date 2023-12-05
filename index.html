@@ -10,9 +10,9 @@
 
 <body>
 
-  <dialog id="names-input">
+  <dialog id="names-change-dialog">
     <div id="form-container">
-      <form action="" id="names-input-form" method="dialog">
+      <form action="" id="names-change-form" method="dialog">
         <div class="form-row">
           <label for="player-one-name">Player 1 Name <span class="req-star" aria-label="required">*</span></label>
           <input type="text" id="player-one-name" name="player-one-name" required>
@@ -23,8 +23,8 @@
         </div>
       </form>
       <menu id="form-buttons-container">
-        <button id="cancel-name-change" form="names-input-form" autofocus>Cancel</button>
-        <button type="submit" id="save-name-change" form="names-input-form">Save</button>
+        <button id="cancel-names-button" form="names-input-form" autofocus>Cancel</button>
+        <button type="submit" id="save-names-button" form="names-input-form">Save</button>
       </menu>
     </div>
   </dialog>
@@ -48,7 +48,7 @@
     <div id="buttons-container">
       <button id="change-names-button">Change Names</button>
       <button id="next-round-button">Next Round</button>
-      <button id="end-game">End Game</button>
+      <button id="end-game-button">End Game</button>
     </div>
   </div>
 
