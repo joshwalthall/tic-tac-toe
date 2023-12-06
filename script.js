@@ -90,7 +90,6 @@ const PlayerFactory = (playerName, playerMark) => {
 
 
 const Game = (function () {
-    const changeNamesButton = document.getElementById('change-names-button');
     const nextRoundButton = document.getElementById('next-round-button');
     const endGameButton = document.getElementById('end-game-button');
     const changeNamesDialog = document.getElementById('change-names-dialog');
@@ -144,7 +143,6 @@ const Game = (function () {
                 tile.addEventListener('click', processTurnClick);
             };
         };
-        changeNamesButton.addEventListener('click', _showchangeNamesDialog);
         cancelNamesButton.addEventListener('click', _cancelNamesChange);
         saveNamesButton.addEventListener('click', _saveNamesChange);
     };
@@ -178,7 +176,7 @@ const Game = (function () {
     };
     const setCurrentPlayer = (newCurrentPlayer) => {
         currentPlayer = newCurrentPlayer;
-        DisplayController.changeElementText('turnPlayer', `${currentPlayer.getName()}'s turn`);
+        DisplayController.changeElementText('gameMessage', `${currentPlayer.getName()}'s turn`);
     };
     const swapCurrentPlayer = () => {
         if (currentPlayer === playerOne) {
@@ -314,6 +312,7 @@ const Game = (function () {
         setCurrentPlayer(playerOne);
         setRoundFirstPlayer(playerOne);
         updateRoundNumber();
+        _showchangeNamesDialog();
     };
 
     return {
@@ -361,7 +360,7 @@ const DisplayController = (function () {
         gridContainer: document.getElementById('grid-container'),
         clickDisplayer: document.getElementById('click-displayer'),
         roundNumber: document.getElementById('round-number'),
-        turnPlayer: document.getElementById('turn-player'),
+        gameMessage: document.getElementById('game-message'),
     };
 
     const changeTileMark = (rowNum, colNum, mark) => {
@@ -392,7 +391,7 @@ const DisplayController = (function () {
     const updateNames = () => {
         changeElementText('p1Name', Game.playerOne.getName());
         changeElementText('p2Name', Game.playerTwo.getName());
-        changeElementText('turnPlayer', `${Game.getCurrentPlayer().getName()}'s turn`);
+        changeElementText('gameMessage', `${Game.getCurrentPlayer().getName()}'s turn`);
     };
     const updateScores = () => {
         changeElementText('p1Score', Game.playerOne.getScore());
