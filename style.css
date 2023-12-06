@@ -63,10 +63,10 @@
 
 @keyframes shake {
     0% {translate: 0px 0px; color: var(--tile-mark-color);}
-    25% {translate: 4px 0px; color: rgb(177, 24, 55);}
-    50% {translate: -4px 0px;}
-    75% {translate: -4px 0px; color: rgb(177, 24, 55);}
-    100% {translate: 4px 0px; color: var(--tile-mark-color);}    
+    25% {translate: 3px 0px; color: rgb(177, 24, 55);}
+    50% {translate: -3px 0px;}
+    75% {translate: -3px 0px; color: rgb(177, 24, 55);}
+    100% {translate: 3px 0px; color: var(--tile-mark-color);}    
 }
 
 body {

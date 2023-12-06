@@ -62,7 +62,7 @@ const GameBoard = (function () {
 
 
 const PlayerFactory = (playerName, playerMark) => {
-    const displayName = playerName;
+    let displayName = playerName;
     let score = 0;
     const mark = playerMark;
 
@@ -93,7 +93,7 @@ const Game = (function () {
     const changeNamesButton = document.getElementById('change-names-button');
     const nextRoundButton = document.getElementById('next-round-button');
     const endGameButton = document.getElementById('end-game-button');
-    const namesChangeDialog = document.getElementById('names-change-dialog');
+    const changeNamesDialog = document.getElementById('change-names-dialog');
     const namesChangeForm = document.getElementById('names-change-form');
     const playerOneName = document.getElementById('player-one-name');
     const playerTwoName = document.getElementById('player-two-name');
@@ -144,19 +144,27 @@ const Game = (function () {
                 tile.addEventListener('click', processTurnClick);
             };
         };
-        changeNamesButton.addEventListener('click', _showNamesChangeDialog);
+        changeNamesButton.addEventListener('click', _showchangeNamesDialog);
         cancelNamesButton.addEventListener('click', _cancelNamesChange);
+        saveNamesButton.addEventListener('click', _saveNamesChange);
     };
     const _resetNameFields = () => {
         playerOneName.value = playerOne.getName();
         playerTwoName.value = playerTwo.getName();
     };
-    const _showNamesChangeDialog = () => {
+    const _showchangeNamesDialog = () => {
         _resetNameFields();
-        namesChangeDialog.showModal();
+        changeNamesDialog.showModal();
     };
     const _cancelNamesChange = () => {
-        namesChangeDialog.close();
+        changeNamesDialog.close();
+    };
+    const _saveNamesChange = (submitEvent) => {
+        submitEvent.preventDefault();
+        playerOne.setName(playerOneName.value);
+        playerTwo.setName(playerTwoName.value);
+        DisplayController.updateNames();
+        changeNamesDialog.close();
     };
     const processTurnClick = (e) => {
         let tileID = e.target.id;
@@ -384,6 +392,7 @@ const DisplayController = (function () {
     const updateNames = () => {
         changeElementText('p1Name', Game.playerOne.getName());
         changeElementText('p2Name', Game.playerTwo.getName());
+        changeElementText('turnPlayer', `${Game.getCurrentPlayer().getName()}'s turn`);
     };
     const updateScores = () => {
         changeElementText('p1Score', Game.playerOne.getScore());
