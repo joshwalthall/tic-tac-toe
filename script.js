@@ -96,8 +96,7 @@ const Game = (function () {
     const namesChangeForm = document.getElementById('names-change-form');
     const playerOneName = document.getElementById('player-one-name');
     const playerTwoName = document.getElementById('player-two-name');
-    const saveNamesButton = document.getElementById('save-names-button');
-    const cancelNamesButton = document.getElementById('cancel-names-button');
+    const startGameButton = document.getElementById('start-game-button');
 
     const playerOne = PlayerFactory('Player One', 'X');
     const playerTwo = PlayerFactory('Player Two', 'O');
@@ -143,8 +142,7 @@ const Game = (function () {
                 tile.addEventListener('click', processTurnClick);
             };
         };
-        cancelNamesButton.addEventListener('click', _cancelNamesChange);
-        saveNamesButton.addEventListener('click', _saveNamesChange);
+        startGameButton.addEventListener('click', _saveNames);
     };
     const _resetNameFields = () => {
         playerOneName.value = playerOne.getName();
@@ -154,10 +152,7 @@ const Game = (function () {
         _resetNameFields();
         changeNamesDialog.showModal();
     };
-    const _cancelNamesChange = () => {
-        changeNamesDialog.close();
-    };
-    const _saveNamesChange = (submitEvent) => {
+    const _saveNames = (submitEvent) => {
         submitEvent.preventDefault();
         playerOne.setName(playerOneName.value);
         playerTwo.setName(playerTwoName.value);
