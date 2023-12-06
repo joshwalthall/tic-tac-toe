@@ -95,6 +95,8 @@ const Game = (function () {
     const endGameButton = document.getElementById('end-game-button');
     const namesChangeDialog = document.getElementById('names-change-dialog');
     const namesChangeForm = document.getElementById('names-change-form');
+    const playerOneName = document.getElementById('player-one-name');
+    const playerTwoName = document.getElementById('player-two-name');
     const saveNamesButton = document.getElementById('save-names-button');
     const cancelNamesButton = document.getElementById('cancel-names-button');
 
@@ -145,7 +147,12 @@ const Game = (function () {
         changeNamesButton.addEventListener('click', _showNamesChangeDialog);
         cancelNamesButton.addEventListener('click', _cancelNamesChange);
     };
+    const _resetNameFields = () => {
+        playerOneName.value = playerOne.getName();
+        playerTwoName.value = playerTwo.getName();
+    };
     const _showNamesChangeDialog = () => {
+        _resetNameFields();
         namesChangeDialog.showModal();
     };
     const _cancelNamesChange = () => {
