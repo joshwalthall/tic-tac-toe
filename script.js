@@ -78,6 +78,9 @@ const PlayerFactory = (playerName, playerMark) => {
     const incrementScore = () => {
         score += 1;
     };
+    const resetScore = () => {
+        score = 0;
+    };
 
     return {
         mark,
@@ -85,6 +88,7 @@ const PlayerFactory = (playerName, playerMark) => {
         setName,
         getScore,
         incrementScore,
+        resetScore,
     };
 };
 
@@ -96,6 +100,7 @@ const Game = (function () {
     let roundNumber = 1;
     let maxRounds = 5;
     let roundFirstPlayer = {playerOne};
+    let tilesEnabled = true;
 
     const winningPatterns = [
         [[0,0], [0,1], [0,2]],
@@ -137,6 +142,7 @@ const Game = (function () {
         };
         DisplayController.elements.startGameButton.addEventListener('click', _saveNames);
         DisplayController.elements.nextRoundButton.addEventListener('click', _startNewRound);
+        DisplayController.elements.newGameButton.addEventListener('click', _startNewGame);
     };
     const _saveNames = (submitEvent) => {
         submitEvent.preventDefault();
@@ -144,14 +150,21 @@ const Game = (function () {
         playerTwo.setName(DisplayController.elements.playerTwoName.value);
         DisplayController.updateNames();
         DisplayController.closeDialog('changeNamesDialog');
-        // changeNamesDialog.close();
+    };
+    const _enableTiles = () => {
+        tilesEnabled = true;
+    };
+    const _disableTiles = () => {
+        tilesEnabled = false;
     };
     const processTurnClick = (e) => {
-        let tileID = e.target.id;
-        let splitID = tileID.split('-');
-        let tileRow = Number(splitID[1]);
-        let tileCol = Number(splitID[2]);
-        takeTurn(tileRow, tileCol);
+        if (tilesEnabled === true ) {
+            let tileID = e.target.id;
+            let splitID = tileID.split('-');
+            let tileRow = Number(splitID[1]);
+            let tileCol = Number(splitID[2]);
+            takeTurn(tileRow, tileCol);
+        };
     };
     const getCurrentPlayer = () => {
         return currentPlayer;
@@ -256,11 +269,13 @@ const Game = (function () {
         DisplayController.changeElementText('gameMessage', `${winningPlayer.getName()} won the round!`)
         console.log(`${winningPlayer.getName()} won the round!`);
         printScore();
+        _disableTiles();
     };
     const _tieRound = () => {
         DisplayController.changeElementText('gameMessage', "It's a tie! Neither player wins the round.");
         console.log(`It's a tie! Neither player wins the round.`);
         printScore();
+        _disableTiles();
     };
     const _startNewRound = () => {
         GameBoard.reset();
@@ -270,16 +285,38 @@ const Game = (function () {
         setCurrentPlayer(roundFirstPlayer);
         DisplayController.clearTiles();
         DisplayController.hideNextRoundButton();
+        _enableTiles();
     };
     const _endGame = (gameOverResult) => {
-        let message = '';
+        let gameOverMessage = '';
         if (gameOverResult.won === true) {
             let winner = _getLeadPlayer();
-            message = `${winner.getName()} won the game!`;
+            gameOverMessage = `${winner.getName()} won the game!`;
         } else if (gameOverResult.tied === true) {
-            message = "It's a tie game! Neither player wins.";
+            gameOverMessage = "It's a tie game! Neither player wins.";
         };
-        DisplayController.changeElementText('gameOverMessage', message);
+        DisplayController.changeElementText('gameOverMessage', gameOverMessage);
+        let playerOneScore = playerOne.getScore();
+        let playerOneName = playerOne.getName();
+        let playerTwoScore = playerTwo.getScore();
+        let playerTwoName = playerTwo.getName();
+        let finalScoreMessage = `Final Score: ${playerOneName} - ${playerOneScore}, ${playerTwoName} - ${playerTwoScore}`;
+        DisplayController.changeElementText('finalScoreMessage', finalScoreMessage);
+        DisplayController.showDialog('gameOverDialog')
+        _disableTiles();
+    };
+    const _startNewGame = () => {
+        GameBoard.reset();
+        GameBoard.print();
+        playerOne.resetScore();
+        playerTwo.resetScore();
+        resetRoundNumber();
+        swapRoundFirstPlayer();
+        setCurrentPlayer(roundFirstPlayer);
+        DisplayController.clearTiles();
+        DisplayController.updateScores();
+        DisplayController.closeDialog('gameOverDialog');
+        _enableTiles();
     };
     const takeTurn = (rowNum, colNum) => {
         let playerMark = currentPlayer.mark;
@@ -317,6 +354,10 @@ const Game = (function () {
         roundNumber += 1;
         updateRoundNumber();
     };
+    const resetRoundNumber = () => {
+        roundNumber = 1;
+        updateRoundNumber();
+    }
     const updateRoundNumber = () => {
         console.log(`   -= ROUND ${roundNumber} =-`);
         DisplayController.changeElementText('roundNumber', `Round ${roundNumber}`);
@@ -336,7 +377,6 @@ const Game = (function () {
         setCurrentPlayer(playerOne);
         setRoundFirstPlayer(playerOne);
         updateRoundNumber();
-        // _showChangeNamesDialog();
         DisplayController.initialize();
     };
 
@@ -393,18 +433,17 @@ const DisplayController = (function () {
         playerOneName: document.getElementById('player-one-name'),
         playerTwoName: document.getElementById('player-two-name'),
         startGameButton: document.getElementById('start-game-button'),
+        newGameButton: document.getElementById('new-game-button'),
     };
 
-    const _showChangeNamesDialog = () => {
-        elements.playerOneName.value = Game.playerOne.getName();
-        elements.playerTwoName.value = Game.playerTwo.getName();
-        elements.changeNamesDialog.showModal();
-    };
     const showNextRoundButton = () => {
         elements.nextRoundButton.style.display = "block";
     };
     const hideNextRoundButton = () => {
         elements.nextRoundButton.style.display = "none";
+    };
+    const showDialog = (dialogName) => {
+        elements[dialogName].showModal();
     };
     const closeDialog = (dialogName) => {
         elements[dialogName].close();
@@ -445,7 +484,9 @@ const DisplayController = (function () {
     };
     const initialize = () => {
         elements.nextRoundButton.style.display = "none";
-        _showChangeNamesDialog();
+        elements.playerOneName.value = Game.playerOne.getName();
+        elements.playerTwoName.value = Game.playerTwo.getName();
+        showDialog('changeNamesDialog');
     };
 
     return {
@@ -453,6 +494,7 @@ const DisplayController = (function () {
         elements,
         showNextRoundButton,
         hideNextRoundButton,
+        showDialog,
         closeDialog,
         changeTileMark,
         clearTiles,
